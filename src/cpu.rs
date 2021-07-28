@@ -41,6 +41,49 @@ pub enum Instruction {
     RegLoad(u16),            // FX65
 }
 
+impl std::fmt::Display for Instruction {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Instruction::Invalid(x) => write!(f, "invalid instruction 0x{:x}", x),
+            Instruction::ClearScreen => write!(f, "clearing screen"),
+            Instruction::Return => write!(f, "returning"),
+            Instruction::Jump(x) => write!(f, "jumping to 0x{:x}", x),
+            Instruction::Call(x) => write!(f, "calling 0x{:x}", x),
+            _ => write!(f,"{:?}",self)
+            /*
+            Instruction::VxNNSkip(x, nn) => todo!(),
+            Instruction::VxNNNotSkip(_, _) => todo!(),
+            Instruction::VxVySkip(_, _) => todo!(),
+            Instruction::SetRegister(_, _) => todo!(),
+            Instruction::AddRegister(_, _) => todo!(),
+            Instruction::VxSetVy(_, _) => todo!(),
+            Instruction::VxBitOrVy(_, _) => todo!(),
+            Instruction::VxBitAndVy(_, _) => todo!(),
+            Instruction::VxBitXOrVy(_, _) => todo!(),
+            Instruction::VxBitAddVy(_, _) => todo!(),
+            Instruction::VxSubVy(_, _) => todo!(),
+            Instruction::VxBitShiftRVy(_, _) => todo!(),
+            Instruction::VxMinusVy(_, _) => todo!(),
+            Instruction::VxBitShiftLVy(_, _) => todo!(),
+            Instruction::VxNotVySkip(_, _) => todo!(),
+            Instruction::SetIndexRegister(_) => todo!(),
+            Instruction::V0Jump(_) => todo!(),
+            Instruction::VxRand(_, _) => todo!(),
+            Instruction::Draw(_, _, _) => todo!(),
+            Instruction::KeyVxSkip(_) => todo!(),
+            Instruction::KeyNotVxSkip(_) => todo!(),
+            Instruction::SetTimerVx(_) => todo!(),
+            Instruction::GetKeyVx(_) => todo!(),
+            Instruction::GetTimerVx(_) => todo!(),
+            Instruction::SetSoundTimerVx(_) => todo!(),
+            Instruction::AddIVx(_) => todo!(),
+            Instruction::SetISprite(_) => todo!(),
+            Instruction::BCDVX(_) => todo!(),
+            Instruction::RegDump(_) => todo!(),
+            Instruction::RegLoad(_) => todo!(), */
+        }
+    }
+}
 
 pub struct Cpu {
     pc: u16,
@@ -156,7 +199,7 @@ impl Cpu {
                     0x6 => Instruction::VxBitShiftRVy(x, y),
                     0x7 => Instruction::VxMinusVy(x, y),
                     0xE => Instruction::VxBitShiftLVy(x, y),
-                    _ => Instruction::Invalid(opcode)
+                    _ => Instruction::Invalid(opcode),
                 }
             }
             0x9000 => {
@@ -178,15 +221,14 @@ impl Cpu {
                 let (x, y, n) = Self::unpack3(opcode);
                 Instruction::Draw(self.v[x as usize], self.v[y as usize], n)
             }
-            0xE000 => 
-            {
+            0xE000 => {
                 let x = (opcode & 0x0F00) >> 8;
                 match opcode & 0x00FF {
-                0x009E => Instruction::KeyVxSkip(x),
-                0x00A1 => Instruction::KeyNotVxSkip(x),
-                _ => (Instruction::Invalid(opcode))
+                    0x009E => Instruction::KeyVxSkip(x),
+                    0x00A1 => Instruction::KeyNotVxSkip(x),
+                    _ => (Instruction::Invalid(opcode)),
                 }
-            },
+            }
             0xF000 => {
                 let x = (opcode & 0x0F00) >> 8;
                 match opcode & 0x00FF {
