@@ -55,4 +55,14 @@ mod tests {
         vx_test(0x8046, 0x0).test_eq_v(0xF,0x1);
     }
 
+    #[test]
+    fn vx_minus_vy(){
+        vx_test(0x8027, 0x2);
+    }
+
+    
+    #[test]
+    fn vx_bit_shift_l_vy(){
+        vx_test(0x802E, 0b0010);
+    }
 }
