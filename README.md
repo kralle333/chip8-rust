@@ -1,3 +1,2 @@
 # chip8-rust
-Chip8 emulator written in rust
-Uses SDL2 for display, audio and input
+Chip8 emulator written in Rust, uses SDL2 for display, audio and input.
